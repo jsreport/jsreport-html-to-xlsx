@@ -3,15 +3,20 @@
   "version": "0.0.1",
   "description": "jsreport recipe capable of converting html into excel",
   "scripts": {},
+  "homepage": "https://github.com/jsreport/jsreport-html-to-xlsx",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jsreport/jsreport-html-to-xlsx.git"
+  },
   "keywords": [
     "jsreport",
     "xlsx"
   ],
   "license": "LGPL",
   "dependencies": {
-    "html-to-xlsx": "^0.4.1",
-    "node.extend": "^1.1.5",
-    "q": "^1.4.1"
+    "html-to-xlsx": "0.4.1",
+    "node.extend": "1.1.5",
+    "q": "1.4.1"
   },
   "author": "Jan Blaha",
   "devDependencies": {}
