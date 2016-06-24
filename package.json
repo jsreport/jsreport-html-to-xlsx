@@ -19,5 +19,8 @@
     "q": "1.4.1"
   },
   "author": "Jan Blaha",
-  "devDependencies": {}
+  "devDependencies": {},
+  "files": [
+    "lib", "index.js", "jsreport.config.js"
+  ]
 }
