@@ -1,6 +1,6 @@
 # jsreport-html-to-xlsx
 [![NPM Version](http://img.shields.io/npm/v/jsreport-html-to-xlsx.svg?style=flat-square)](https://npmjs.com/package/jsreport-html-to-xlsx)
-
+[![Build Status](https://travis-ci.org/jsreport/jsreport-html-to-xlsx.png?branch=master)](https://travis-ci.org/jsreport/jsreport-html-to-xlsx)
 jsreport recipe capable of converting html into excel
 
 See http://jsreport.net/learn/html-to-xlsx
