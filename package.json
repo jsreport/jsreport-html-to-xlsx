@@ -23,7 +23,7 @@
   "license": "LGPL",
   "dependencies": {
     "bluebird": "3.4.7",
-    "html-to-xlsx": "0.6.0",
+    "html-to-xlsx": "0.6.1",
     "node.extend": "1.1.6"
   },
   "author": "Jan Blaha",
