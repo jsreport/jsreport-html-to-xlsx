@@ -22,19 +22,19 @@
   },
   "license": "LGPL",
   "dependencies": {
-    "bluebird": "3.4.7",
+    "bluebird": "3.5.0",
     "html-to-xlsx": "0.6.2",
     "node.extend": "1.1.6"
   },
   "author": "Jan Blaha",
   "devDependencies": {
-    "eslint": "3.14.1",
-    "jsreport-core": "1.1.0",
+    "eslint": "3.17.1",
+    "jsreport-core": "1.2.1",
     "jsreport-templates": "1.1.0",
-    "jsreport-xlsx": "1.1.8",
+    "jsreport-xlsx": "1.1.10",
     "mocha": "3.2.0",
     "should": "11.2.0",
-    "standard": "8.6.0"
+    "standard": "9.0.1"
   },
   "files": [
     "lib",
