@@ -29,9 +29,9 @@
   "author": "Jan Blaha",
   "devDependencies": {
     "eslint": "3.19.0",
-    "jsreport-core": "1.3.0",
-    "jsreport-templates": "1.1.0",
-    "jsreport-xlsx": "1.3.1",
+    "jsreport-core": "1.4.0",
+    "jsreport-templates": "1.1.1",
+    "jsreport-xlsx": "1.4.1",
     "mocha": "3.2.0",
     "should": "11.2.1",
     "standard": "9.0.1"
