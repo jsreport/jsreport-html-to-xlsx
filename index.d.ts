@@ -3,7 +3,7 @@
 
 declare namespace JsReport {
 	const enum RecipeType {
-		Xlsx = 'xlsx'
+		Html2Xlsx = 'html-to-xlsx'
 	}
 
 	interface Html2Xlsx {
