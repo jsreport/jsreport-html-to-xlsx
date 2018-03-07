@@ -11,7 +11,14 @@ describe('html to xlsx', () => {
 
   it('should not fail when rendering', async () => {
     const request = {
-      template: { content: '<table><tr><td>a</td></tr></table>', recipe: 'html-to-xlsx', engine: 'none' }
+      template: {
+        content: '<table><tr><td>a</td></tr></table>',
+        recipe: 'html-to-xlsx',
+        engine: 'none',
+        htmlToXlsx: {
+          htmlEngine: 'chrome'
+        }
+      }
     }
 
     const response = await reporter.render(request)

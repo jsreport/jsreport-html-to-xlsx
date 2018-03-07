@@ -1,10 +1,6 @@
 {
   "extends": "standard",
   "env": {
-      "node": true,
-      "mocha": true
-  },
-  "globals": {
-    "define": true
+    "node": true
   }
 }

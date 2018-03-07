@@ -1,9 +1,12 @@
-var main = require('./lib/htmlToXlsx.js')
-var config = require('./jsreport.config.js')
+const main = require('./lib/htmlToXlsx.js')
+const config = require('./jsreport.config.js')
 
 module.exports = function (options) {
-  config.options = options
-  config.main = main
-  config.directory = __dirname
-  return config
+  const newConfig = { ...config }
+
+  newConfig.options = options
+  newConfig.main = main
+  newConfig.directory = __dirname
+
+  return newConfig
 }
