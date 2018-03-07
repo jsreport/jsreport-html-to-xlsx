@@ -101,27 +101,50 @@
 	var Properties = function (_Component) {
 	  _inherits(Properties, _Component);
 	
-	  function Properties() {
+	  function Properties(props) {
 	    _classCallCheck(this, Properties);
 	
-	    return _possibleConstructorReturn(this, (Properties.__proto__ || Object.getPrototypeOf(Properties)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (Properties.__proto__ || Object.getPrototypeOf(Properties)).call(this, props));
+	
+	    _this.changeHtmlToXlsx = _this.changeHtmlToXlsx.bind(_this);
+	    return _this;
 	  }
 	
 	  _createClass(Properties, [{
-	    key: 'render',
-	    value: function render() {
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      var entity = this.props.entity;
+	
+	      var htmlEngines = _jsreportStudio2.default.extensions['html-to-xlsx'].options.htmlEngines;
+	
+	      if (entity.__isNew && htmlEngines != null && htmlEngines[0] != null) {
+	        this.changeHtmlToXlsx({
+	          htmlEngine: htmlEngines[0]
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'changeHtmlToXlsx',
+	    value: function changeHtmlToXlsx(change) {
 	      var _props = this.props,
 	          entity = _props.entity,
 	          onChange = _props.onChange;
 	
 	      var htmlToXlsx = entity.htmlToXlsx || {};
-	      var htmlEngines = _jsreportStudio2.default.extensions['html-to-xlsx'].options.htmlEngines;
 	
-	      var changeHtmlToXlsx = function changeHtmlToXlsx(change) {
-	        return onChange(_extends({}, entity, {
-	          htmlToXlsx: _extends({}, entity.htmlToXlsx, change)
-	        }));
-	      };
+	      onChange(_extends({}, entity, {
+	        htmlToXlsx: _extends({}, htmlToXlsx, change)
+	      }));
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+	
+	      var entity = this.props.entity;
+	
+	      var htmlToXlsx = entity.htmlToXlsx || {};
+	      var htmlEngines = _jsreportStudio2.default.extensions['html-to-xlsx'].options.htmlEngines;
 	
 	      return _react2.default.createElement(
 	        'div',
@@ -137,9 +160,9 @@
 	          _react2.default.createElement(
 	            'select',
 	            {
-	              value: htmlToXlsx.htmlEngine || htmlEngines[0],
+	              value: htmlToXlsx.htmlEngine,
 	              onChange: function onChange(v) {
-	                return changeHtmlToXlsx({ htmlEngine: v.target.value });
+	                return _this2.changeHtmlToXlsx({ htmlEngine: v.target.value });
 	              }
 	            },
 	            htmlEngines.map(function (engine) {
