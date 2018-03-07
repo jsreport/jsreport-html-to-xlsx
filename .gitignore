@@ -3,6 +3,7 @@ logs
 *.log
 
 # Runtime data
+.DS_Store
 pids
 *.pid
 *.seed
