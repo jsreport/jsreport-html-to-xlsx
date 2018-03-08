@@ -106,7 +106,7 @@
 	
 	    var _this = _possibleConstructorReturn(this, (Properties.__proto__ || Object.getPrototypeOf(Properties)).call(this, props));
 	
-	    _this.applyDefaultToEntity = _this.applyDefaultToEntity.bind(_this);
+	    _this.applyDefaultsToEntity = _this.applyDefaultsToEntity.bind(_this);
 	    _this.changeHtmlToXlsx = _this.changeHtmlToXlsx.bind(_this);
 	    return _this;
 	  }
@@ -114,22 +114,21 @@
 	  _createClass(Properties, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var entity = this.props.entity;
-	
-	
-	      this.applyDefaultToEntity(entity);
+	      this.applyDefaultsToEntity(this.props);
 	    }
 	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
 	      // when component changes because another template is created
 	      if (this.props.entity._id !== nextProps.entity._id) {
-	        this.applyDefaultToEntity(nextProps.entity);
+	        this.applyDefaultsToEntity(nextProps);
 	      }
 	    }
 	  }, {
-	    key: 'applyDefaultToEntity',
-	    value: function applyDefaultToEntity(entity) {
+	    key: 'applyDefaultsToEntity',
+	    value: function applyDefaultsToEntity(props) {
+	      var entity = props.entity;
+	
 	      var htmlEngines = _jsreportStudio2.default.extensions['html-to-xlsx'].options.htmlEngines;
 	      var entityNeedsDefault = false;
 	
@@ -138,17 +137,16 @@
 	      }
 	
 	      if (htmlEngines != null && htmlEngines[0] != null && entityNeedsDefault) {
-	        this.changeHtmlToXlsx({
+	        this.changeHtmlToXlsx(props, {
 	          htmlEngine: htmlEngines[0]
 	        });
 	      }
 	    }
 	  }, {
 	    key: 'changeHtmlToXlsx',
-	    value: function changeHtmlToXlsx(change) {
-	      var _props = this.props,
-	          entity = _props.entity,
-	          onChange = _props.onChange;
+	    value: function changeHtmlToXlsx(props, change) {
+	      var entity = props.entity,
+	          onChange = props.onChange;
 	
 	      var htmlToXlsx = entity.htmlToXlsx || {};
 	
@@ -182,7 +180,7 @@
 	            {
 	              value: htmlToXlsx.htmlEngine,
 	              onChange: function onChange(v) {
-	                return _this2.changeHtmlToXlsx({ htmlEngine: v.target.value });
+	                return _this2.changeHtmlToXlsx(_this2.props, { htmlEngine: v.target.value });
 	              }
 	            },
 	            htmlEngines.map(function (engine) {
