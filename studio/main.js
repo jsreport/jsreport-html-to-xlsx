@@ -106,18 +106,38 @@
 	
 	    var _this = _possibleConstructorReturn(this, (Properties.__proto__ || Object.getPrototypeOf(Properties)).call(this, props));
 	
+	    _this.applyDefaultToEntity = _this.applyDefaultToEntity.bind(_this);
 	    _this.changeHtmlToXlsx = _this.changeHtmlToXlsx.bind(_this);
 	    return _this;
 	  }
 	
 	  _createClass(Properties, [{
-	    key: 'componentWillMount',
-	    value: function componentWillMount() {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
 	      var entity = this.props.entity;
 	
-	      var htmlEngines = _jsreportStudio2.default.extensions['html-to-xlsx'].options.htmlEngines;
 	
-	      if (entity.__isNew && htmlEngines != null && htmlEngines[0] != null) {
+	      this.applyDefaultToEntity(entity);
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      // when component changes because another template is created
+	      if (this.props.entity._id !== nextProps.entity._id) {
+	        this.applyDefaultToEntity(nextProps.entity);
+	      }
+	    }
+	  }, {
+	    key: 'applyDefaultToEntity',
+	    value: function applyDefaultToEntity(entity) {
+	      var htmlEngines = _jsreportStudio2.default.extensions['html-to-xlsx'].options.htmlEngines;
+	      var entityNeedsDefault = false;
+	
+	      if (entity.__isNew || entity.htmlToXlsx == null || entity.htmlToXlsx.htmlEngine == null) {
+	        entityNeedsDefault = true;
+	      }
+	
+	      if (htmlEngines != null && htmlEngines[0] != null && entityNeedsDefault) {
 	        this.changeHtmlToXlsx({
 	          htmlEngine: htmlEngines[0]
 	        });

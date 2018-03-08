@@ -5,14 +5,35 @@ class Properties extends Component {
   constructor (props) {
     super(props)
 
+    this.applyDefaultToEntity = this.applyDefaultToEntity.bind(this)
     this.changeHtmlToXlsx = this.changeHtmlToXlsx.bind(this)
   }
 
-  componentWillMount () {
+  componentDidMount () {
     const { entity } = this.props
-    const htmlEngines = Studio.extensions['html-to-xlsx'].options.htmlEngines
 
-    if (entity.__isNew && htmlEngines != null && htmlEngines[0] != null) {
+    this.applyDefaultToEntity(entity)
+  }
+
+  componentWillReceiveProps (nextProps) {
+    // when component changes because another template is created
+    if (this.props.entity._id !== nextProps.entity._id) {
+      this.applyDefaultToEntity(nextProps.entity)
+    }
+  }
+
+  applyDefaultToEntity (entity) {
+    const htmlEngines = Studio.extensions['html-to-xlsx'].options.htmlEngines
+    let entityNeedsDefault = false
+
+    if (
+      entity.__isNew ||
+      (entity.htmlToXlsx == null || entity.htmlToXlsx.htmlEngine == null)
+    ) {
+      entityNeedsDefault = true
+    }
+
+    if (htmlEngines != null && htmlEngines[0] != null && entityNeedsDefault) {
       this.changeHtmlToXlsx({
         htmlEngine: htmlEngines[0]
       })
