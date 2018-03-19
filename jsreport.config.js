@@ -1,6 +1,6 @@
 module.exports = {
   'name': 'html-to-xlsx',
   'main': 'lib/htmlToXlsx.js',
-  'dependencies': [],
+  'dependencies': ['templates'],
   'hasPublicPart': false
 }
