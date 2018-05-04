@@ -3,6 +3,7 @@ logs
 *.log
 
 # Runtime data
+.DS_Store
 pids
 *.pid
 *.seed
@@ -27,3 +28,12 @@ build/Release
 node_modules
 
 .idea
+
+# studio/main.js
+# studio/main.js.map
+
+# jsreport files
+data
+logs
+dev.config.json
+prod.config.json
