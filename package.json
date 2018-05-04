@@ -39,10 +39,10 @@
   },
   "license": "LGPL",
   "dependencies": {
-    "chrome-page-eval": "github:bjrmatos/chrome-page-eval",
-    "html-to-xlsx": "github:pofider/html-to-xlsx#1.0.0-beta",
+    "chrome-page-eval": "1.0.0",
+    "html-to-xlsx": "1.0.0",
     "node.extend": "2.0.0",
-    "phantom-page-eval": "github:bjrmatos/phantom-page-eval",
+    "phantom-page-eval": "1.0.0",
     "request": "2.83.0",
     "stream-to-array": "2.3.0"
   },
