@@ -24,4 +24,17 @@ describe('html to xlsx', () => {
     const response = await reporter.render(request)
     response.content.toString().should.containEql('PK')
   })
+
+  it('should use default htmlEngine', async () => {
+    const request = {
+      template: {
+        content: '<table><tr><td>a</td></tr></table>',
+        recipe: 'html-to-xlsx',
+        engine: 'none'
+      }
+    }
+
+    const response = await reporter.render(request)
+    response.content.toString().should.containEql('PK')
+  })
 })
