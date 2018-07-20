@@ -40,7 +40,7 @@
   "license": "LGPL",
   "dependencies": {
     "chrome-page-eval": "1.0.1",
-    "html-to-xlsx": "1.0.0",
+    "html-to-xlsx": "1.0.1",
     "node.extend": "2.0.0",
     "phantom-page-eval": "1.0.0",
     "request": "2.83.0",
