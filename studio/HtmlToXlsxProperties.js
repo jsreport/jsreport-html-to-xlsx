@@ -76,6 +76,14 @@ class Properties extends Component {
               onChange={(v) => this.changeHtmlToXlsx(this.props, { fontFamily: v.target.value })} />
           </div>
         )}
+        {!legacy && (
+          <div className='form-group'>
+            <label>insert table output to xlsx template</label>
+            <input
+              type='checkbox' checked={htmlToXlsx.insertToXlsxTemplate === true}
+              onChange={(v) => this.changeHtmlToXlsx(this.props, { insertToXlsxTemplate: v.target.checked })} />
+          </div>
+        )}
         <div className='form-group'>
           <label title='window.JSREPORT_READY_TO_START=true;'>wait for conversion trigger</label>
           <input

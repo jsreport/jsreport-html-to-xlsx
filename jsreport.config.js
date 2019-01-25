@@ -33,6 +33,6 @@ module.exports = {
       }
     }
   },
-  'dependencies': ['templates'],
+  'dependencies': ['templates', 'xlsx'],
   'hasPublicPart': false
 }
