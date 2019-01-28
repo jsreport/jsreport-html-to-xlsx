@@ -50,10 +50,6 @@
 	
 	var _HtmlToXlsxProperties2 = _interopRequireDefault(_HtmlToXlsxProperties);
 	
-	var _XlsxTemplateProperties = __webpack_require__(4);
-	
-	var _XlsxTemplateProperties2 = _interopRequireDefault(_XlsxTemplateProperties);
-	
 	var _jsreportStudio = __webpack_require__(3);
 	
 	var _jsreportStudio2 = _interopRequireDefault(_jsreportStudio);
@@ -65,9 +61,6 @@
 	});
 	_jsreportStudio2.default.addPropertiesComponent('html to better xlsx', _HtmlToXlsxProperties2.default, function (entity) {
 	  return entity.__entitySet === 'templates' && entity.recipe === 'html-to-better-xlsx';
-	});
-	_jsreportStudio2.default.addPropertiesComponent(_XlsxTemplateProperties2.default.title, _XlsxTemplateProperties2.default, function (entity) {
-	  return entity.__entitySet === 'templates' && entity.recipe === 'html-to-better-xlsx' && entity.htmlToXlsx && entity.htmlToXlsx.insertToXlsxTemplate === true;
 	});
 	
 	_jsreportStudio2.default.addApiSpec({
@@ -109,8 +102,38 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	var EntityRefSelect = _jsreportStudio2.default.EntityRefSelect;
+	
 	var Properties = function (_Component) {
 	  _inherits(Properties, _Component);
+	
+	  _createClass(Properties, null, [{
+	    key: 'selectXlsxTemplates',
+	    value: function selectXlsxTemplates(entities) {
+	      return Object.keys(entities).filter(function (k) {
+	        return entities[k].__entitySet === 'xlsxTemplates';
+	      }).map(function (k) {
+	        return entities[k];
+	      });
+	    }
+	  }, {
+	    key: 'title',
+	    value: function title(entity, entities) {
+	      if (!entity.baseXlsxTemplate || !entity.baseXlsxTemplate.shortid) {
+	        return 'xlsx template';
+	      }
+	
+	      var foundItems = Properties.selectXlsxTemplates(entities).filter(function (e) {
+	        return entity.baseXlsxTemplate.shortid === e.shortid;
+	      });
+	
+	      if (!foundItems.length) {
+	        return 'xlsx template';
+	      }
+	
+	      return 'xlsx template: ' + foundItems[0].name;
+	    }
+	  }]);
 	
 	  function Properties(props) {
 	    _classCallCheck(this, Properties);
@@ -126,6 +149,7 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.applyDefaultsToEntity(this.props);
+	      this.removeInvalidXlsxTemplateReferences();
 	    }
 	  }, {
 	    key: 'componentWillReceiveProps',
@@ -133,6 +157,32 @@
 	      // when component changes because another template is created
 	      if (this.props.entity._id !== nextProps.entity._id) {
 	        this.applyDefaultsToEntity(nextProps);
+	      }
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      this.removeInvalidXlsxTemplateReferences();
+	    }
+	  }, {
+	    key: 'removeInvalidXlsxTemplateReferences',
+	    value: function removeInvalidXlsxTemplateReferences() {
+	      var _props = this.props,
+	          entity = _props.entity,
+	          entities = _props.entities,
+	          onChange = _props.onChange;
+	
+	
+	      if (!entity.baseXlsxTemplate) {
+	        return;
+	      }
+	
+	      var updatedXlsxTemplates = Object.keys(entities).filter(function (k) {
+	        return entities[k].__entitySet === 'xlsxTemplates' && entities[k].shortid === entity.baseXlsxTemplate.shortid;
+	      });
+	
+	      if (updatedXlsxTemplates.length === 0) {
+	        onChange({ _id: entity._id, baseXlsxTemplate: null });
 	      }
 	    }
 	  }, {
@@ -171,7 +221,9 @@
 	      var _this2 = this;
 	
 	      var legacy = this.props.legacy === true;
-	      var entity = this.props.entity;
+	      var _props2 = this.props,
+	          entity = _props2.entity,
+	          _onChange = _props2.onChange;
 	
 	      var htmlToXlsx = entity.htmlToXlsx || {};
 	      var htmlEngines = _jsreportStudio2.default.extensions['html-to-xlsx'].options.htmlEngines;
@@ -232,6 +284,25 @@
 	              return _this2.changeHtmlToXlsx(_this2.props, { insertToXlsxTemplate: v.target.checked });
 	            } })
 	        ),
+	        htmlToXlsx.insertToXlsxTemplate === true && _react2.default.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          _react2.default.createElement(
+	            'label',
+	            null,
+	            'xlsx template'
+	          ),
+	          _react2.default.createElement(EntityRefSelect, {
+	            headingLabel: 'Select xlsx template',
+	            filter: function filter(references) {
+	              return { xlsxTemplates: references.xlsxTemplates };
+	            },
+	            value: entity.baseXlsxTemplate ? entity.baseXlsxTemplate.shortid : null,
+	            onChange: function onChange(selected) {
+	              return _onChange({ _id: entity._id, baseXlsxTemplate: selected != null && selected.length > 0 ? { shortid: selected[0].shortid } : null });
+	            }
+	          })
+	        ),
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'form-group' },
@@ -271,136 +342,6 @@
 /***/ function(module, exports) {
 
 	module.exports = Studio;
-
-/***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _jsreportStudio = __webpack_require__(3);
-	
-	var _jsreportStudio2 = _interopRequireDefault(_jsreportStudio);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var EntityRefSelect = _jsreportStudio2.default.EntityRefSelect;
-	
-	var XlsxTemplateProperties = function (_Component) {
-	  _inherits(XlsxTemplateProperties, _Component);
-	
-	  function XlsxTemplateProperties() {
-	    _classCallCheck(this, XlsxTemplateProperties);
-	
-	    return _possibleConstructorReturn(this, (XlsxTemplateProperties.__proto__ || Object.getPrototypeOf(XlsxTemplateProperties)).apply(this, arguments));
-	  }
-	
-	  _createClass(XlsxTemplateProperties, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      this.removeInvalidXlsxTemplateReferences();
-	    }
-	  }, {
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate() {
-	      this.removeInvalidXlsxTemplateReferences();
-	    }
-	  }, {
-	    key: 'removeInvalidXlsxTemplateReferences',
-	    value: function removeInvalidXlsxTemplateReferences() {
-	      var _props = this.props,
-	          entity = _props.entity,
-	          entities = _props.entities,
-	          onChange = _props.onChange;
-	
-	
-	      if (!entity.baseXlsxTemplate) {
-	        return;
-	      }
-	
-	      var updatedXlsxTemplates = Object.keys(entities).filter(function (k) {
-	        return entities[k].__entitySet === 'xlsxTemplates' && entities[k].shortid === entity.baseXlsxTemplate.shortid;
-	      });
-	
-	      if (updatedXlsxTemplates.length === 0) {
-	        onChange({ _id: entity._id, baseXlsxTemplate: null });
-	      }
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _props2 = this.props,
-	          entity = _props2.entity,
-	          _onChange = _props2.onChange;
-	
-	
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'properties-section' },
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'form-group' },
-	          _react2.default.createElement(EntityRefSelect, {
-	            headingLabel: 'Select xlsx template',
-	            filter: function filter(references) {
-	              return { xlsxTemplates: references.xlsxTemplates };
-	            },
-	            value: entity.baseXlsxTemplate ? entity.baseXlsxTemplate.shortid : null,
-	            onChange: function onChange(selected) {
-	              return _onChange({ _id: entity._id, baseXlsxTemplate: selected != null && selected.length > 0 ? { shortid: selected[0].shortid } : null });
-	            }
-	          })
-	        )
-	      );
-	    }
-	  }], [{
-	    key: 'selectItems',
-	    value: function selectItems(entities) {
-	      return Object.keys(entities).filter(function (k) {
-	        return entities[k].__entitySet === 'xlsxTemplates';
-	      }).map(function (k) {
-	        return entities[k];
-	      });
-	    }
-	  }, {
-	    key: 'title',
-	    value: function title(entity, entities) {
-	      if (!entity.baseXlsxTemplate || !entity.baseXlsxTemplate.shortid) {
-	        return 'xlsx template';
-	      }
-	
-	      var foundItems = XlsxTemplateProperties.selectItems(entities).filter(function (e) {
-	        return entity.baseXlsxTemplate.shortid === e.shortid;
-	      });
-	
-	      if (!foundItems.length) {
-	        return 'xlsx template';
-	      }
-	
-	      return 'xlsx template: ' + foundItems[0].name;
-	    }
-	  }]);
-	
-	  return XlsxTemplateProperties;
-	}(_react.Component);
-	
-	exports.default = XlsxTemplateProperties;
 
 /***/ }
 /******/ ]);
