@@ -94,8 +94,39 @@ describe('html to xlsx', () => {
     workbook.sheets()[1].cell(6, 1).value().should.be.eql(6)
   })
 
-  it('should throw error when insert into xlsx template gets into duplicated sheet name', async () => {
-    const xlsxTemplateBuf = await readFileAsync(path.join(__dirname, 'error-template.xlsx'))
+  it('should replace sheet when insert into xlsx template gets into duplicated sheet name', async () => {
+    const xlsxTemplateBuf = await readFileAsync(path.join(__dirname, 'duplicate-template.xlsx'))
+
+    const request = {
+      template: {
+        content: `
+        <table name="Data">
+          <tr>
+              <td data-cell-type="number">1</td>
+          </tr>
+        </table>
+        `,
+        recipe: 'html-to-better-xlsx',
+        engine: 'none',
+        baseXlsxTemplate: {
+          content: xlsxTemplateBuf.toString('base64')
+        },
+        htmlToXlsx: {
+          insertToXlsxTemplate: true
+        }
+      }
+    }
+
+    const response = await reporter.render(request)
+    const workbook = await XlsxPopulate.fromDataAsync(response.content)
+
+    workbook.sheets().length.should.be.eql(2)
+    workbook.sheets()[1].name().should.be.eql('Data')
+    workbook.sheets()[1].cell(1, 1).value().should.be.eql(1)
+  })
+
+  it('should not throw error when replacing sheet in excel that contains only one sheet', async () => {
+    const xlsxTemplateBuf = await readFileAsync(path.join(__dirname, 'only-one-sheet-template.xlsx'))
 
     const request = {
       template: {
@@ -117,6 +148,11 @@ describe('html to xlsx', () => {
       }
     }
 
-    return reporter.render(request).should.be.rejected()
+    const response = await reporter.render(request)
+    const workbook = await XlsxPopulate.fromDataAsync(response.content)
+
+    workbook.sheets().length.should.be.eql(1)
+    workbook.sheets()[0].name().should.be.eql('Main')
+    workbook.sheets()[0].cell(1, 1).value().should.be.eql(1)
   })
 })
