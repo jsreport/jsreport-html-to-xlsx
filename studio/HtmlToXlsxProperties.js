@@ -109,14 +109,6 @@ class Properties extends Component {
         </div>
         {!legacy && (
           <div className='form-group'>
-            <label>font family</label>
-            <input
-              type='text' placeholder='Verdana' value={htmlToXlsx.fontFamily || ''}
-              onChange={(v) => this.changeHtmlToXlsx(this.props, { fontFamily: v.target.value })} />
-          </div>
-        )}
-        {!legacy && (
-          <div className='form-group'>
             <label>insert table output to xlsx template</label>
             <input
               type='checkbox' checked={htmlToXlsx.insertToXlsxTemplate === true}

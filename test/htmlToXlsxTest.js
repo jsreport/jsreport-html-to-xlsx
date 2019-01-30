@@ -43,6 +43,28 @@ describe('html to xlsx', () => {
     response.content.toString().should.containEql('PK')
   })
 
+  it('should use Calibri as default font-family', async () => {
+    const request = {
+      template: {
+        content: `
+        <table>
+          <tr>
+              <td data-cell-type="number">1</td>
+          </tr>
+        </table>
+        `,
+        recipe: 'html-to-better-xlsx',
+        engine: 'none'
+      }
+    }
+
+    const response = await reporter.render(request)
+    const workbook = await XlsxPopulate.fromDataAsync(response.content)
+
+    workbook.sheets().length.should.be.eql(1)
+    workbook.sheets()[0].cell(1, 1).style('fontFamily').should.be.eql('Calibri')
+  })
+
   it('should insert into xlsx template', async () => {
     const xlsxTemplateBuf = await readFileAsync(path.join(__dirname, 'sum-template.xlsx'))
 
