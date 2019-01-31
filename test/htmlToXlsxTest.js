@@ -177,4 +177,201 @@ describe('html to xlsx', () => {
     workbook.sheets()[0].name().should.be.eql('Main')
     workbook.sheets()[0].cell(1, 1).value().should.be.eql(1)
   })
+
+  it('should keep styles when insert into xlsx template', async () => {
+    const xlsxTemplateBuf = await readFileAsync(path.join(__dirname, 'sum-template.xlsx'))
+
+    const request = {
+      template: {
+        content: `
+        <style>
+          td {
+            background-color: yellow;
+            color: green;
+            border: 1px solid blue;
+          }
+        </style>
+        <table name="Data">
+          <tr>
+              <td data-cell-type="number">1</td>
+          </tr>
+        </table>
+        `,
+        recipe: 'html-to-better-xlsx',
+        engine: 'none',
+        baseXlsxTemplate: {
+          content: xlsxTemplateBuf.toString('base64')
+        },
+        htmlToXlsx: {
+          insertToXlsxTemplate: true
+        }
+      }
+    }
+
+    const response = await reporter.render(request)
+    const workbook = await XlsxPopulate.fromDataAsync(response.content)
+
+    workbook.sheets().length.should.be.eql(2)
+    workbook.sheets()[1].name().should.be.eql('Data')
+
+    workbook.sheets()[1].cell(1, 1).style('fill').should.be.eql({
+      type: 'solid',
+      color: {
+        rgb: 'FFFFFF00'
+      }
+    })
+
+    workbook.sheets()[1].cell(1, 1).style('fontColor').should.be.eql({
+      rgb: 'FF008000'
+    })
+
+    workbook.sheets()[1].cell(1, 1).style('leftBorderStyle').should.be.eql('thin')
+
+    workbook.sheets()[1].cell(1, 1).style('leftBorderColor').should.be.eql({
+      rgb: 'FF0000FF'
+    })
+
+    workbook.sheets()[1].cell(1, 1).style('rightBorderStyle').should.be.eql('thin')
+
+    workbook.sheets()[1].cell(1, 1).style('rightBorderColor').should.be.eql({
+      rgb: 'FF0000FF'
+    })
+
+    workbook.sheets()[1].cell(1, 1).style('topBorderStyle').should.be.eql('thin')
+
+    workbook.sheets()[1].cell(1, 1).style('topBorderColor').should.be.eql({
+      rgb: 'FF0000FF'
+    })
+
+    workbook.sheets()[1].cell(1, 1).style('bottomBorderStyle').should.be.eql('thin')
+
+    workbook.sheets()[1].cell(1, 1).style('bottomBorderColor').should.be.eql({
+      rgb: 'FF0000FF'
+    })
+  })
+
+  it('should keep merged cells when insert into xlsx template', async () => {
+    const xlsxTemplateBuf = await readFileAsync(path.join(__dirname, 'sum-template.xlsx'))
+
+    const request = {
+      template: {
+        content: `
+        <style>
+          td {
+            background-color: yellow;
+            color: green;
+            border: 1px solid blue;
+          }
+        </style>
+        <table name="Data">
+          <tr>
+            <td data-cell-type="number">1</td>
+            <td colspan="2" data-cell-type="number">5</td>
+          </tr>
+          <tr>
+            <td rowspan="2" data-cell-type="number">2</td>
+            <td data-cell-type="number">3</td>
+            <td data-cell-type="number">1</td>
+          </tr>
+          <tr>
+            <td data-cell-type="number">7</td>
+            <td data-cell-type="number">8</td>
+          </tr>
+        </table>
+        `,
+        recipe: 'html-to-better-xlsx',
+        engine: 'none',
+        baseXlsxTemplate: {
+          content: xlsxTemplateBuf.toString('base64')
+        },
+        htmlToXlsx: {
+          insertToXlsxTemplate: true
+        }
+      }
+    }
+
+    const response = await reporter.render(request)
+    const workbook = await XlsxPopulate.fromDataAsync(response.content)
+
+    workbook.sheets().length.should.be.eql(2)
+    workbook.sheets()[1].name().should.be.eql('Data')
+    workbook.sheets()[1].range('B1:C1').merged().should.be.eql(true)
+    workbook.sheets()[1].range('A2:A3').merged().should.be.eql(true)
+  })
+
+  it('should keep formulas when insert into xlsx template', async () => {
+    const xlsxTemplateBuf = await readFileAsync(path.join(__dirname, 'sum-template.xlsx'))
+
+    const request = {
+      template: {
+        content: `
+        <table name="Data">
+          <tr>
+            <td data-cell-type="number">1</td>
+            <td data-cell-type="number">5</td>
+            <td data-cell-type="formula">=SUM(A1, B1)</td>
+          </tr>
+        </table>
+        `,
+        recipe: 'html-to-better-xlsx',
+        engine: 'none',
+        baseXlsxTemplate: {
+          content: xlsxTemplateBuf.toString('base64')
+        },
+        htmlToXlsx: {
+          insertToXlsxTemplate: true
+        }
+      }
+    }
+
+    const response = await reporter.render(request)
+    const workbook = await XlsxPopulate.fromDataAsync(response.content)
+
+    workbook.sheets().length.should.be.eql(2)
+    workbook.sheets()[1].name().should.be.eql('Data')
+    workbook.sheets()[1].cell(1, 3).formula().should.be.eql('=SUM(A1, B1)')
+  })
+
+  it('should keep column width and row height when insert into xlsx template', async () => {
+    const xlsxTemplateBuf = await readFileAsync(path.join(__dirname, 'sum-template.xlsx'))
+
+    const request = {
+      template: {
+        content: `
+        <style>
+          td {
+            width: 120px;
+            height: 50px;
+          }
+        </style>
+        <table name="Data">
+          <tr>
+            <td data-cell-type="number">1</td>
+            <td data-cell-type="number">5</td>
+          </tr>
+          <tr>
+            <td data-cell-type="number">3</td>
+            <td data-cell-type="number">3</td>
+          </tr>
+        </table>
+        `,
+        recipe: 'html-to-better-xlsx',
+        engine: 'none',
+        baseXlsxTemplate: {
+          content: xlsxTemplateBuf.toString('base64')
+        },
+        htmlToXlsx: {
+          insertToXlsxTemplate: true
+        }
+      }
+    }
+
+    const response = await reporter.render(request)
+    const workbook = await XlsxPopulate.fromDataAsync(response.content)
+
+    workbook.sheets().length.should.be.eql(2)
+    workbook.sheets()[1].name().should.be.eql('Data')
+    parseInt(workbook.sheets()[1].column(1).width()).should.be.eql(17)
+    parseInt(workbook.sheets()[1].row(1).height()).should.be.eql(37)
+  })
 })
