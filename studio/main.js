@@ -262,20 +262,6 @@
 	          _react2.default.createElement(
 	            'label',
 	            null,
-	            'font family'
-	          ),
-	          _react2.default.createElement('input', {
-	            type: 'text', placeholder: 'Verdana', value: htmlToXlsx.fontFamily || '',
-	            onChange: function onChange(v) {
-	              return _this2.changeHtmlToXlsx(_this2.props, { fontFamily: v.target.value });
-	            } })
-	        ),
-	        !legacy && _react2.default.createElement(
-	          'div',
-	          { className: 'form-group' },
-	          _react2.default.createElement(
-	            'label',
-	            null,
 	            'insert table output to xlsx template'
 	          ),
 	          _react2.default.createElement('input', {
