@@ -56,11 +56,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	_jsreportStudio2.default.addPropertiesComponent('html to xlsx', _HtmlToXlsxProperties.LegacyProperties, function (entity) {
+	_jsreportStudio2.default.addPropertiesComponent('html to xlsx', _HtmlToXlsxProperties2.default, function (entity) {
 	  return entity.__entitySet === 'templates' && entity.recipe === 'html-to-xlsx';
-	});
-	_jsreportStudio2.default.addPropertiesComponent('html to better xlsx', _HtmlToXlsxProperties2.default, function (entity) {
-	  return entity.__entitySet === 'templates' && entity.recipe === 'html-to-better-xlsx';
 	});
 	
 	_jsreportStudio2.default.addApiSpec({
@@ -80,7 +77,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.LegacyProperties = undefined;
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
@@ -220,7 +216,6 @@
 	    value: function render() {
 	      var _this2 = this;
 	
-	      var legacy = this.props.legacy === true;
 	      var _props2 = this.props,
 	          entity = _props2.entity,
 	          _onChange = _props2.onChange;
@@ -256,7 +251,7 @@
 	            })
 	          )
 	        ),
-	        !legacy && _react2.default.createElement(
+	        _react2.default.createElement(
 	          'div',
 	          { className: 'form-group' },
 	          _react2.default.createElement(
@@ -310,12 +305,7 @@
 	  return Properties;
 	}(_react.Component);
 	
-	var LegacyProperties = function LegacyProperties(props) {
-	  return _react2.default.createElement(Properties, _extends({}, props, { legacy: true }));
-	};
-	
 	exports.default = Properties;
-	exports.LegacyProperties = LegacyProperties;
 
 /***/ },
 /* 2 */
