@@ -53,7 +53,7 @@ describe('html to xlsx', () => {
           </tr>
         </table>
         `,
-        recipe: 'html-to-better-xlsx',
+        recipe: 'html-to-xlsx',
         engine: 'none'
       }
     }
@@ -92,7 +92,7 @@ describe('html to xlsx', () => {
           </tr>
         </table>
         `,
-        recipe: 'html-to-better-xlsx',
+        recipe: 'html-to-xlsx',
         engine: 'none',
         baseXlsxTemplate: {
           content: xlsxTemplateBuf.toString('base64')
@@ -128,7 +128,7 @@ describe('html to xlsx', () => {
           </tr>
         </table>
         `,
-        recipe: 'html-to-better-xlsx',
+        recipe: 'html-to-xlsx',
         engine: 'none',
         baseXlsxTemplate: {
           content: xlsxTemplateBuf.toString('base64')
@@ -159,7 +159,7 @@ describe('html to xlsx', () => {
           </tr>
         </table>
         `,
-        recipe: 'html-to-better-xlsx',
+        recipe: 'html-to-xlsx',
         engine: 'none',
         baseXlsxTemplate: {
           content: xlsxTemplateBuf.toString('base64')
@@ -197,7 +197,7 @@ describe('html to xlsx', () => {
           </tr>
         </table>
         `,
-        recipe: 'html-to-better-xlsx',
+        recipe: 'html-to-xlsx',
         engine: 'none',
         baseXlsxTemplate: {
           content: xlsxTemplateBuf.toString('base64')
@@ -279,7 +279,7 @@ describe('html to xlsx', () => {
           </tr>
         </table>
         `,
-        recipe: 'html-to-better-xlsx',
+        recipe: 'html-to-xlsx',
         engine: 'none',
         baseXlsxTemplate: {
           content: xlsxTemplateBuf.toString('base64')
@@ -313,7 +313,7 @@ describe('html to xlsx', () => {
           </tr>
         </table>
         `,
-        recipe: 'html-to-better-xlsx',
+        recipe: 'html-to-xlsx',
         engine: 'none',
         baseXlsxTemplate: {
           content: xlsxTemplateBuf.toString('base64')
@@ -355,7 +355,7 @@ describe('html to xlsx', () => {
           </tr>
         </table>
         `,
-        recipe: 'html-to-better-xlsx',
+        recipe: 'html-to-xlsx',
         engine: 'none',
         baseXlsxTemplate: {
           content: xlsxTemplateBuf.toString('base64')

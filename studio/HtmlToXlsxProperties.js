@@ -89,7 +89,6 @@ class Properties extends Component {
   }
 
   render () {
-    const legacy = this.props.legacy === true
     const { entity, onChange } = this.props
     const htmlToXlsx = entity.htmlToXlsx || {}
     const htmlEngines = Studio.extensions['html-to-xlsx'].options.htmlEngines
@@ -107,14 +106,12 @@ class Properties extends Component {
             ))}
           </select>
         </div>
-        {!legacy && (
-          <div className='form-group'>
-            <label>insert table output to xlsx template</label>
-            <input
-              type='checkbox' checked={htmlToXlsx.insertToXlsxTemplate === true}
-              onChange={(v) => this.changeHtmlToXlsx(this.props, { insertToXlsxTemplate: v.target.checked })} />
-          </div>
-        )}
+        <div className='form-group'>
+          <label>insert table output to xlsx template</label>
+          <input
+            type='checkbox' checked={htmlToXlsx.insertToXlsxTemplate === true}
+            onChange={(v) => this.changeHtmlToXlsx(this.props, { insertToXlsxTemplate: v.target.checked })} />
+        </div>
         {htmlToXlsx.insertToXlsxTemplate === true && (
           <div className='form-group'>
             <label>xlsx template</label>
@@ -137,9 +134,4 @@ class Properties extends Component {
   }
 }
 
-const LegacyProperties = (props) => {
-  return <Properties {...props} legacy />
-}
-
 export default Properties
-export { LegacyProperties }
