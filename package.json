@@ -41,7 +41,7 @@
   "license": "LGPL",
   "dependencies": {
     "chrome-page-eval": "1.2.0",
-    "html-to-xlsx": "1.1.0",
+    "html-to-xlsx": "github:pofider/html-to-xlsx",
     "node.extend.without.arrays": "1.1.6",
     "phantom-page-eval": "1.2.0",
     "request": "2.88.0",
