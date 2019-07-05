@@ -30,7 +30,7 @@ node_modules
 .idea
 
 # studio/main.js
-studio/main.js.map
+# studio/main.js.map
 
 # jsreport files
 data
