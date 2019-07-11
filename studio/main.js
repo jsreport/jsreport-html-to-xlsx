@@ -146,8 +146,8 @@ _jsreportStudio2.default.previewListeners.push(function (request, entities) {
       React.createElement(
         'a',
         {
-          href: 'https://github.com/jsreport/jsreport-html-to-xlsx', target: '_blank' },
-        'https://github.com/jsreport/jsreport-html-to-xlsx'
+          href: 'https://jsreport.net/learn/html-to-xlsx', target: '_blank' },
+        'https://jsreport.net/learn/html-to-xlsx'
       ),
       ' for details.'
     );
