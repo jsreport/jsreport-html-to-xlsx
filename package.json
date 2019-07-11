@@ -42,10 +42,9 @@
   "dependencies": {
     "chrome-page-eval": "1.2.0",
     "html-to-xlsx": "1.1.1",
+    "jsreport-office": "github:jsreport/jsreport-office",
     "node.extend.without.arrays": "1.1.6",
-    "phantom-page-eval": "1.2.0",
-    "request": "2.88.0",
-    "stream-to-array": "2.3.0"
+    "phantom-page-eval": "1.2.0"
   },
   "devDependencies": {
     "babel-eslint": "8.2.3",

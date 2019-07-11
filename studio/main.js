@@ -119,6 +119,41 @@ _jsreportStudio2.default.addApiSpec({
   }
 });
 
+_jsreportStudio2.default.previewListeners.push(function (request, entities) {
+  if (request.template.recipe !== 'html-to-xlsx') {
+    return;
+  }
+
+  if (_jsreportStudio2.default.extensions['html-to-xlsx'].options.preview.enabled === false) {
+    return;
+  }
+
+  if (_jsreportStudio2.default.extensions['html-to-xlsx'].options.preview.showWarning === false) {
+    return;
+  }
+
+  if (_jsreportStudio2.default.getSettingValueByKey('office-preview-informed', false) === true) {
+    return;
+  }
+
+  _jsreportStudio2.default.setSetting('office-preview-informed', true);
+
+  _jsreportStudio2.default.openModal(function () {
+    return React.createElement(
+      'div',
+      null,
+      'We need to upload your office report to our publicly hosted server to be able to use Office Online Service for previewing here in the studio. You can disable it in the configuration, see ',
+      React.createElement(
+        'a',
+        {
+          href: 'https://github.com/jsreport/jsreport-html-to-xlsx', target: '_blank' },
+        'https://github.com/jsreport/jsreport-html-to-xlsx'
+      ),
+      ' for details.'
+    );
+  });
+});
+
 /***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
