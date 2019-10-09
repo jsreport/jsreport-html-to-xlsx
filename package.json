@@ -42,7 +42,7 @@
   "dependencies": {
     "chrome-page-eval": "1.2.0",
     "html-to-xlsx": "1.1.1",
-    "jsreport-office": "1.0.1",
+    "jsreport-office": "1.0.2",
     "node.extend.without.arrays": "1.1.6",
     "phantom-page-eval": "1.2.0"
   },
