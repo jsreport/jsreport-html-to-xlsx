@@ -371,7 +371,7 @@ var Properties = function (_Component) {
             }
           })
         ),
-        _react2.default.createElement(
+        htmlToXlsx.htmlEngine !== 'cheerio' && _react2.default.createElement(
           'div',
           { className: 'form-group' },
           _react2.default.createElement(

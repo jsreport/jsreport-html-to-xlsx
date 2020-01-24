@@ -123,12 +123,14 @@ class Properties extends Component {
             />
           </div>
         )}
-        <div className='form-group'>
-          <label title='window.JSREPORT_READY_TO_START=true;'>wait for conversion trigger</label>
-          <input
-            type='checkbox' title='window.JSREPORT_READY_TO_START=true;' checked={htmlToXlsx.waitForJS === true}
-            onChange={(v) => this.changeHtmlToXlsx(this.props, { waitForJS: v.target.checked })} />
-        </div>
+        {htmlToXlsx.htmlEngine !== 'cheerio' && (
+          <div className='form-group'>
+            <label title='window.JSREPORT_READY_TO_START=true;'>wait for conversion trigger</label>
+            <input
+              type='checkbox' title='window.JSREPORT_READY_TO_START=true;' checked={htmlToXlsx.waitForJS === true}
+              onChange={(v) => this.changeHtmlToXlsx(this.props, { waitForJS: v.target.checked })} />
+          </div>
+        )}
       </div>
     )
   }
