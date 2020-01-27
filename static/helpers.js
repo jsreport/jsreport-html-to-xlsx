@@ -2,9 +2,7 @@
 /* eslint no-new-func: 0 */
 /* *global __rootDirectory */
 ;(function (global) {
-  const path = require('path')
-  const fs = require('fs')
-  const nanoid = require('nanoid')
+  const tmpHandler = this.tmpHandler || require('tmpHandler.js')
   const Handlebars = require('handlebars')
 
   global.eachRows = function (data, options) {
@@ -19,28 +17,28 @@
 
       chunks.push(options.fn(item))
 
-      rowsCount++
-      totalRows++
+      if (options.data.root.$writeToFiles === true) {
+        rowsCount++
+        totalRows++
 
-      if (rowsCount === maxRows) {
-        const tempFile = write(options.data.root.$tempAutoCleanupDirectory, chunks.join(''))
-        files.push(path.basename(tempFile))
-        rowsCount = 0
-        chunks = []
+        if (rowsCount === maxRows) {
+          const tempFile = tmpHandler.write(options.data.root.$tempAutoCleanupDirectory, chunks.join(''))
+          files.push(tmpHandler.basename(tempFile))
+          rowsCount = 0
+          chunks = []
+        }
       }
     }
 
+    if (!options.data.root.$writeToFiles) {
+      return new Handlebars.SafeString(chunks.join(''))
+    }
+
     if (chunks.length > 0) {
-      const tempFile = write(options.data.root.$tempAutoCleanupDirectory, chunks.join(''))
-      files.push(path.basename(tempFile))
+      const tempFile = tmpHandler.write(options.data.root.$tempAutoCleanupDirectory, chunks.join(''))
+      files.push(tmpHandler.basename(tempFile))
     }
 
     return new Handlebars.SafeString(`<tr data-rows-placeholder data-total-rows="${totalRows}" data-files="${files.join(',')}" />`)
-  }
-
-  function write (tmp, data) {
-    const file = path.join(tmp, `${nanoid(7)}.html`)
-    fs.writeFileSync(file, data)
-    return file
   }
 })(this)
