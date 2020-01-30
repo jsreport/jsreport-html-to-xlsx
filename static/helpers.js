@@ -11,11 +11,20 @@
     let rowsCount = 0
     const files = []
     let chunks = []
+    let contextData
+
+    if (options.data) {
+      contextData = Handlebars.createFrame(options.data)
+    }
 
     for (let i = 0; i < data.length; i++) {
+      if (contextData) {
+        contextData.index = i
+      }
+
       const item = data[i]
 
-      chunks.push(options.fn(item))
+      chunks.push(options.fn(item, { data: contextData }))
 
       if (options.data.root.$writeToFiles === true) {
         rowsCount++
