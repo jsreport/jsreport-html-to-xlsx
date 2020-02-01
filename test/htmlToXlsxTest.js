@@ -2,7 +2,7 @@ require('should')
 const util = require('util')
 const path = require('path')
 const fs = require('fs')
-const XlsxPopulate = require('html-to-xlsx').XlsxPopulate
+const XlsxPopulate = require('xlsx-populate')
 const jsreport = require('jsreport-core')
 const readFileAsync = util.promisify(fs.readFile)
 
@@ -10,7 +10,7 @@ describe('html to xlsx', () => {
   let reporter
 
   beforeEach(() => {
-    reporter = jsreport().use(require('../')()).use(require('jsreport-templates')())
+    reporter = jsreport().use(require('../')()).use(require('jsreport-templates')()).use(require('jsreport-handlebars')())
     return reporter.init()
   })
 
@@ -217,36 +217,36 @@ describe('html to xlsx', () => {
     workbook.sheets()[1].cell(1, 1).style('fill').should.be.eql({
       type: 'solid',
       color: {
-        rgb: 'FFFFFF00'
+        rgb: 'FFFFFF00'.toLowerCase()
       }
     })
 
     workbook.sheets()[1].cell(1, 1).style('fontColor').should.be.eql({
-      rgb: 'FF008000'
+      rgb: 'FF008000'.toLowerCase()
     })
 
     workbook.sheets()[1].cell(1, 1).style('leftBorderStyle').should.be.eql('thin')
 
     workbook.sheets()[1].cell(1, 1).style('leftBorderColor').should.be.eql({
-      rgb: 'FF0000FF'
+      rgb: 'FF0000FF'.toLowerCase()
     })
 
     workbook.sheets()[1].cell(1, 1).style('rightBorderStyle').should.be.eql('thin')
 
     workbook.sheets()[1].cell(1, 1).style('rightBorderColor').should.be.eql({
-      rgb: 'FF0000FF'
+      rgb: 'FF0000FF'.toLowerCase()
     })
 
     workbook.sheets()[1].cell(1, 1).style('topBorderStyle').should.be.eql('thin')
 
     workbook.sheets()[1].cell(1, 1).style('topBorderColor').should.be.eql({
-      rgb: 'FF0000FF'
+      rgb: 'FF0000FF'.toLowerCase()
     })
 
     workbook.sheets()[1].cell(1, 1).style('bottomBorderStyle').should.be.eql('thin')
 
     workbook.sheets()[1].cell(1, 1).style('bottomBorderColor').should.be.eql({
-      rgb: 'FF0000FF'
+      rgb: 'FF0000FF'.toLowerCase()
     })
   })
 
