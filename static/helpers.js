@@ -3,17 +3,48 @@
 /* *global __rootDirectory */
 ;(function (global) {
   const tmpHandler = this.tmpHandler || require('tmpHandler.js')
-  const Handlebars = require('handlebars')
 
-  global.htmlToXlsxEachRows = function (data, options) {
+  function jsrenderHandlebarsCompatibility (fn) {
+    return function () {
+      if (arguments.length && arguments[arguments.length - 1].name && arguments[arguments.length - 1].hash) {
+        // handlebars
+        const options = arguments[arguments.length - 1]
+
+        this.ctx = {
+          fromHandlebars: true,
+          root: options.data.root,
+          data: this
+        }
+
+        if (options.fn) {
+          this.tagCtx = {
+            render: options.fn
+          }
+        }
+      } else {
+        if (this.tagCtx) {
+          this.ctx.data = this.tagCtx.view.data
+        }
+      }
+
+      return fn.apply(this, arguments)
+    }
+  }
+
+  function eachRows (data, options) {
     const maxRows = 1000
     let totalRows = 0
     let rowsCount = 0
     const files = []
     let chunks = []
     let contextData
+    let Handlebars
 
-    if (options.data) {
+    if (this.ctx.fromHandlebars) {
+      Handlebars = require('handlebars')
+    }
+
+    if (options && options.data && Handlebars) {
       contextData = Handlebars.createFrame(options.data)
     }
 
@@ -24,14 +55,18 @@
 
       const item = data[i]
 
-      chunks.push(options.fn(item, { data: contextData }))
+      if (Handlebars) {
+        chunks.push(this.tagCtx.render(item, { data: contextData }))
+      } else {
+        chunks.push(this.tagCtx.render(item))
+      }
 
-      if (options.data.root.$writeToFiles === true) {
+      if (this.ctx.root.$writeToFiles === true) {
         rowsCount++
         totalRows++
 
         if (rowsCount === maxRows) {
-          const tempFile = tmpHandler.write(options.data.root.$tempAutoCleanupDirectory, chunks.join(''))
+          const tempFile = tmpHandler.write(this.ctx.root.$tempAutoCleanupDirectory, chunks.join(''))
           files.push(tmpHandler.basename(tempFile))
           rowsCount = 0
           chunks = []
@@ -39,15 +74,29 @@
       }
     }
 
-    if (!options.data.root.$writeToFiles) {
-      return new Handlebars.SafeString(chunks.join(''))
+    let result
+
+    if (!this.ctx.root.$writeToFiles) {
+      result = chunks.join('')
+
+      if (Handlebars) {
+        return new Handlebars.SafeString(result)
+      }
     }
 
     if (chunks.length > 0) {
-      const tempFile = tmpHandler.write(options.data.root.$tempAutoCleanupDirectory, chunks.join(''))
+      const tempFile = tmpHandler.write(this.ctx.root.$tempAutoCleanupDirectory, chunks.join(''))
       files.push(tmpHandler.basename(tempFile))
     }
 
-    return new Handlebars.SafeString(`<tr data-rows-placeholder data-total-rows="${totalRows}" data-files="${files.join(',')}" />`)
+    result = `<tr data-rows-placeholder data-total-rows="${totalRows}" data-files="${files.join(',')}" />`
+
+    if (Handlebars) {
+      return new Handlebars.SafeString(result)
+    }
+
+    return result
   }
+
+  global.htmlToXlsxEachRows = jsrenderHandlebarsCompatibility(eachRows)
 })(this)
