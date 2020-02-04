@@ -5,7 +5,7 @@
   const tmpHandler = this.tmpHandler || require('tmpHandler.js')
   const Handlebars = require('handlebars')
 
-  global.eachRows = function (data, options) {
+  global.htmlToXlsxEachRows = function (data, options) {
     const maxRows = 1000
     let totalRows = 0
     let rowsCount = 0
