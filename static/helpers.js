@@ -89,7 +89,7 @@
       files.push(tmpHandler.basename(tempFile))
     }
 
-    result = `<tr data-rows-placeholder data-total-rows="${totalRows}" data-files="${files.join(',')}" />`
+    result = `<tr id=${tmpHandler.generateTmpId()} data-rows-placeholder data-total-rows="${totalRows}" data-files="${files.join(',')}" />`
 
     if (Handlebars) {
       return new Handlebars.SafeString(result)
