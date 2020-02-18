@@ -232,6 +232,7 @@ var Properties = function (_Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.applyDefaultsToEntity(this.props);
+      this.removeInvalidHtmlEngine();
       this.removeInvalidXlsxTemplateReferences();
     }
   }, {
@@ -245,6 +246,7 @@ var Properties = function (_Component) {
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
+      this.removeInvalidHtmlEngine();
       this.removeInvalidXlsxTemplateReferences();
     }
   }, {
@@ -252,20 +254,36 @@ var Properties = function (_Component) {
     value: function removeInvalidXlsxTemplateReferences() {
       var _props = this.props,
           entity = _props.entity,
-          entities = _props.entities,
-          onChange = _props.onChange;
+          entities = _props.entities;
 
 
-      if (!entity.baseXlsxTemplate) {
+      if (!entity.htmlToXlsx || !entity.htmlToXlsx.baseXlsxTemplate) {
         return;
       }
 
       var updatedXlsxTemplates = Object.keys(entities).filter(function (k) {
-        return entities[k].__entitySet === 'xlsxTemplates' && entities[k].shortid === entity.baseXlsxTemplate.shortid;
+        return entities[k].__entitySet === 'xlsxTemplates' && entities[k].shortid === entity.htmlToXlsx.baseXlsxTemplate.shortid;
       });
 
       if (updatedXlsxTemplates.length === 0) {
-        onChange({ _id: entity._id, baseXlsxTemplate: null });
+        this.changeHtmlToXlsx(this.props, { baseXlsxTemplate: null });
+      }
+    }
+  }, {
+    key: 'removeInvalidHtmlEngine',
+    value: function removeInvalidHtmlEngine() {
+      var entity = this.props.entity;
+
+
+      if (!entity.htmlToXlsx || !entity.htmlToXlsx.htmlEngine) {
+        return;
+      }
+
+      var htmlEngines = _jsreportStudio2.default.extensions['html-to-xlsx'].options.htmlEngines;
+      var isValidHtmlEngine = htmlEngines.includes(entity.htmlToXlsx.htmlEngine);
+
+      if (!isValidHtmlEngine) {
+        this.changeHtmlToXlsx(this.props, { htmlEngine: htmlEngines[0] });
       }
     }
   }, {

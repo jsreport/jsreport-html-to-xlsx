@@ -40,18 +40,13 @@
   },
   "license": "LGPL",
   "dependencies": {
-    "cheerio": "1.0.0-rc.3",
     "chrome-page-eval": "github:bjrmatos/chrome-page-eval",
-    "cornet": "0.1.5",
     "html-to-xlsx": "github:pofider/html-to-xlsx",
-    "htmlparser2": "4.0.0",
     "jsreport-office": "github:jsreport/jsreport-office",
     "nanoid": "1.0.7",
     "node.extend.without.arrays": "1.1.6",
     "opentype.js": "1.1.0",
-    "p-each-series": "2.1.0",
-    "phantom-page-eval": "1.2.0",
-    "tinycolor2": "1.4.1"
+    "phantom-page-eval": "1.2.0"
   },
   "devDependencies": {
     "babel-eslint": "8.2.3",

@@ -31,6 +31,7 @@ class Properties extends Component {
 
   componentDidMount () {
     this.applyDefaultsToEntity(this.props)
+    this.removeInvalidHtmlEngine()
     this.removeInvalidXlsxTemplateReferences()
   }
 
@@ -42,20 +43,36 @@ class Properties extends Component {
   }
 
   componentDidUpdate () {
+    this.removeInvalidHtmlEngine()
     this.removeInvalidXlsxTemplateReferences()
   }
 
   removeInvalidXlsxTemplateReferences () {
-    const { entity, entities, onChange } = this.props
+    const { entity, entities } = this.props
 
-    if (!entity.baseXlsxTemplate) {
+    if (!entity.htmlToXlsx || !entity.htmlToXlsx.baseXlsxTemplate) {
       return
     }
 
-    const updatedXlsxTemplates = Object.keys(entities).filter((k) => entities[k].__entitySet === 'xlsxTemplates' && entities[k].shortid === entity.baseXlsxTemplate.shortid)
+    const updatedXlsxTemplates = Object.keys(entities).filter((k) => entities[k].__entitySet === 'xlsxTemplates' && entities[k].shortid === entity.htmlToXlsx.baseXlsxTemplate.shortid)
 
     if (updatedXlsxTemplates.length === 0) {
-      onChange({ _id: entity._id, baseXlsxTemplate: null })
+      this.changeHtmlToXlsx(this.props, { baseXlsxTemplate: null })
+    }
+  }
+
+  removeInvalidHtmlEngine () {
+    const { entity } = this.props
+
+    if (!entity.htmlToXlsx || !entity.htmlToXlsx.htmlEngine) {
+      return
+    }
+
+    const htmlEngines = Studio.extensions['html-to-xlsx'].options.htmlEngines
+    const isValidHtmlEngine = htmlEngines.includes(entity.htmlToXlsx.htmlEngine)
+
+    if (!isValidHtmlEngine) {
+      this.changeHtmlToXlsx(this.props, { htmlEngine: htmlEngines[0] })
     }
   }
 
