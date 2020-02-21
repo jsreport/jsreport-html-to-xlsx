@@ -8,18 +8,34 @@ class Properties extends Component {
     return Object.keys(entities).filter((k) => entities[k].__entitySet === 'xlsxTemplates').map((k) => entities[k])
   }
 
+  static selectAssets (entities) {
+    return Object.keys(entities).filter((k) => entities[k].__entitySet === 'assets').map((k) => entities[k])
+  }
+
   static title (entity, entities) {
-    if (!entity.baseXlsxTemplate || !entity.baseXlsxTemplate.shortid) {
+    if (
+      !entity.baseXlsxTemplate ||
+      (!entity.baseXlsxTemplate.shortid && !entity.baseXlsxTemplate.templateAssetShortid)
+    ) {
       return 'xlsx template'
     }
 
     const foundItems = Properties.selectXlsxTemplates(entities).filter((e) => entity.baseXlsxTemplate.shortid === e.shortid)
+    const foundAssets = Properties.selectAssets(entities).filter((e) => entity.baseXlsxTemplate.templateAssetShortid === e.shortid)
 
-    if (!foundItems.length) {
+    if (!foundItems.length && !foundAssets.length) {
       return 'xlsx template'
     }
 
-    return 'xlsx template: ' + foundItems[0].name
+    let name
+
+    if (foundAssets.length) {
+      name = foundAssets[0].name
+    } else {
+      name = foundItems[0].name
+    }
+
+    return 'xlsx template: ' + name
   }
 
   constructor (props) {
@@ -48,16 +64,30 @@ class Properties extends Component {
   }
 
   removeInvalidXlsxTemplateReferences () {
-    const { entity, entities } = this.props
+    const { entity, entities, onChange } = this.props
 
-    if (!entity.htmlToXlsx || !entity.htmlToXlsx.baseXlsxTemplate) {
+    if (!entity.baseXlsxTemplate) {
       return
     }
 
-    const updatedXlsxTemplates = Object.keys(entities).filter((k) => entities[k].__entitySet === 'xlsxTemplates' && entities[k].shortid === entity.htmlToXlsx.baseXlsxTemplate.shortid)
+    const updatedXlsxTemplates = Object.keys(entities).filter((k) => entities[k].__entitySet === 'xlsxTemplates' && entities[k].shortid === entity.baseXlsxTemplate.shortid)
+    const updatedXlsxAssets = Object.keys(entities).filter((k) => entities[k].__entitySet === 'assets' && entities[k].shortid === entity.baseXlsxTemplate.templateAssetShortid)
 
-    if (updatedXlsxTemplates.length === 0) {
-      this.changeHtmlToXlsx(this.props, { baseXlsxTemplate: null })
+    const newXlsxTemplate = { ...entity.baseXlsxTemplate }
+    let changed = false
+
+    if (entity.baseXlsxTemplate.shortid && updatedXlsxTemplates.length === 0) {
+      changed = true
+      newXlsxTemplate.shortid = null
+    }
+
+    if (entity.baseXlsxTemplate.templateAssetShortid && updatedXlsxAssets.length === 0) {
+      changed = true
+      newXlsxTemplate.templateAssetShortid = null
+    }
+
+    if (changed) {
+      onChange({ _id: entity._id, baseXlsxTemplate: Object.keys(newXlsxTemplate).length ? newXlsxTemplate : null })
     }
   }
 
@@ -105,6 +135,21 @@ class Properties extends Component {
     })
   }
 
+  changeBaseXlsxTemplate (oldXlsxTemplate, prop, value) {
+    let newValue
+
+    if (value == null) {
+      newValue = { ...oldXlsxTemplate }
+      newValue[prop] = null
+    } else {
+      return { ...oldXlsxTemplate, [prop]: value }
+    }
+
+    newValue = Object.keys(newValue).length ? newValue : null
+
+    return newValue
+  }
+
   render () {
     const { entity, onChange } = this.props
     const htmlToXlsx = entity.htmlToXlsx || {}
@@ -131,12 +176,29 @@ class Properties extends Component {
         </div>
         {htmlToXlsx.insertToXlsxTemplate === true && (
           <div className='form-group'>
-            <label>xlsx template</label>
+            <label>xlsx asset</label>
+            <EntityRefSelect
+              headingLabel='Select xlsx template'
+              filter={(references) => ({ data: references.assets })}
+              value={entity.baseXlsxTemplate ? entity.baseXlsxTemplate.templateAssetShortid : null}
+              onChange={(selected) => onChange({
+                _id: entity._id,
+                baseXlsxTemplate: this.changeBaseXlsxTemplate(this.props.entity.baseXlsxTemplate, 'templateAssetShortid', selected != null && selected.length > 0 ? selected[0].shortid : null)
+              })}
+            />
+          </div>
+        )}
+        {htmlToXlsx.insertToXlsxTemplate === true && (
+          <div className='form-group'>
+            <label>xlsx template (deprecated)</label>
             <EntityRefSelect
               headingLabel='Select xlsx template'
               filter={(references) => ({ xlsxTemplates: references.xlsxTemplates })}
               value={entity.baseXlsxTemplate ? entity.baseXlsxTemplate.shortid : null}
-              onChange={(selected) => onChange({ _id: entity._id, baseXlsxTemplate: selected != null && selected.length > 0 ? { shortid: selected[0].shortid } : null })}
+              onChange={(selected) => onChange({
+                _id: entity._id,
+                baseXlsxTemplate: this.changeBaseXlsxTemplate(this.props.entity.baseXlsxTemplate, 'shortid', selected != null && selected.length > 0 ? selected[0].shortid : null)
+              })}
             />
           </div>
         )}
