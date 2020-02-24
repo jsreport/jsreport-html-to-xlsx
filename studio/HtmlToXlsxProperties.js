@@ -14,14 +14,14 @@ class Properties extends Component {
 
   static title (entity, entities) {
     if (
-      !entity.baseXlsxTemplate ||
-      (!entity.baseXlsxTemplate.shortid && !entity.baseXlsxTemplate.templateAssetShortid)
+      (!entity.baseXlsxTemplate || !entity.baseXlsxTemplate.shortid) &&
+      (!entity.htmlToXlsx || !entity.htmlToXlsx.templateAssetShortid)
     ) {
       return 'xlsx template'
     }
 
-    const foundItems = Properties.selectXlsxTemplates(entities).filter((e) => entity.baseXlsxTemplate.shortid === e.shortid)
-    const foundAssets = Properties.selectAssets(entities).filter((e) => entity.baseXlsxTemplate.templateAssetShortid === e.shortid)
+    const foundItems = Properties.selectXlsxTemplates(entities).filter((e) => entity.baseXlsxTemplate != null && entity.baseXlsxTemplate.shortid === e.shortid)
+    const foundAssets = Properties.selectAssets(entities).filter((e) => entity.htmlToXlsx != null && entity.htmlToXlsx.templateAssetShortid === e.shortid)
 
     if (!foundItems.length && !foundAssets.length) {
       return 'xlsx template'
@@ -66,28 +66,21 @@ class Properties extends Component {
   removeInvalidXlsxTemplateReferences () {
     const { entity, entities, onChange } = this.props
 
-    if (!entity.baseXlsxTemplate) {
+    if (!entity.baseXlsxTemplate && !entity.htmlToXlsx) {
       return
     }
 
-    const updatedXlsxTemplates = Object.keys(entities).filter((k) => entities[k].__entitySet === 'xlsxTemplates' && entities[k].shortid === entity.baseXlsxTemplate.shortid)
-    const updatedXlsxAssets = Object.keys(entities).filter((k) => entities[k].__entitySet === 'assets' && entities[k].shortid === entity.baseXlsxTemplate.templateAssetShortid)
+    const updatedXlsxTemplates = Object.keys(entities).filter((k) => entities[k].__entitySet === 'xlsxTemplates' && entity.baseXlsxTemplate != null && entities[k].shortid === entity.baseXlsxTemplate.shortid)
+    const updatedXlsxAssets = Object.keys(entities).filter((k) => entities[k].__entitySet === 'assets' && entity.htmlToXlsx != null && entities[k].shortid === entity.htmlToXlsx.templateAssetShortid)
 
-    const newXlsxTemplate = { ...entity.baseXlsxTemplate }
-    let changed = false
-
-    if (entity.baseXlsxTemplate.shortid && updatedXlsxTemplates.length === 0) {
-      changed = true
-      newXlsxTemplate.shortid = null
+    if (entity.htmlToXlsx && entity.htmlToXlsx.templateAssetShortid && updatedXlsxAssets.length === 0) {
+      this.changeHtmlToXlsx(this.props, {
+        templateAssetShortid: null
+      })
     }
 
-    if (entity.baseXlsxTemplate.templateAssetShortid && updatedXlsxAssets.length === 0) {
-      changed = true
-      newXlsxTemplate.templateAssetShortid = null
-    }
-
-    if (changed) {
-      onChange({ _id: entity._id, baseXlsxTemplate: Object.keys(newXlsxTemplate).length ? newXlsxTemplate : null })
+    if (entity.baseXlsxTemplate && entity.baseXlsxTemplate.shortid && updatedXlsxTemplates.length === 0) {
+      onChange({ _id: entity._id, baseXlsxTemplate: null })
     }
   }
 
@@ -135,21 +128,6 @@ class Properties extends Component {
     })
   }
 
-  changeBaseXlsxTemplate (oldXlsxTemplate, prop, value) {
-    let newValue
-
-    if (value == null) {
-      newValue = { ...oldXlsxTemplate }
-      newValue[prop] = null
-    } else {
-      return { ...oldXlsxTemplate, [prop]: value }
-    }
-
-    newValue = Object.keys(newValue).length ? newValue : null
-
-    return newValue
-  }
-
   render () {
     const { entity, onChange } = this.props
     const htmlToXlsx = entity.htmlToXlsx || {}
@@ -180,10 +158,9 @@ class Properties extends Component {
             <EntityRefSelect
               headingLabel='Select xlsx template'
               filter={(references) => ({ data: references.assets })}
-              value={entity.baseXlsxTemplate ? entity.baseXlsxTemplate.templateAssetShortid : null}
-              onChange={(selected) => onChange({
-                _id: entity._id,
-                baseXlsxTemplate: this.changeBaseXlsxTemplate(this.props.entity.baseXlsxTemplate, 'templateAssetShortid', selected != null && selected.length > 0 ? selected[0].shortid : null)
+              value={entity.htmlToXlsx ? entity.htmlToXlsx.templateAssetShortid : null}
+              onChange={(selected) => this.changeHtmlToXlsx(this.props, {
+                templateAssetShortid: selected != null && selected.length > 0 ? selected[0].shortid : null
               })}
             />
           </div>
@@ -195,10 +172,7 @@ class Properties extends Component {
               headingLabel='Select xlsx template'
               filter={(references) => ({ xlsxTemplates: references.xlsxTemplates })}
               value={entity.baseXlsxTemplate ? entity.baseXlsxTemplate.shortid : null}
-              onChange={(selected) => onChange({
-                _id: entity._id,
-                baseXlsxTemplate: this.changeBaseXlsxTemplate(this.props.entity.baseXlsxTemplate, 'shortid', selected != null && selected.length > 0 ? selected[0].shortid : null)
-              })}
+              onChange={(selected) => onChange({ _id: entity._id, baseXlsxTemplate: selected != null && selected.length > 0 ? { shortid: selected[0].shortid } : null })}
             />
           </div>
         )}
