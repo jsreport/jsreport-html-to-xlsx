@@ -147,35 +147,25 @@ class Properties extends Component {
           </select>
         </div>
         <div className='form-group'>
-          <label>insert table output to xlsx template</label>
-          <input
-            type='checkbox' checked={htmlToXlsx.insertToXlsxTemplate === true}
-            onChange={(v) => this.changeHtmlToXlsx(this.props, { insertToXlsxTemplate: v.target.checked })} />
+          <label>xlsx asset</label>
+          <EntityRefSelect
+            headingLabel='Select xlsx template'
+            filter={(references) => ({ data: references.assets })}
+            value={entity.htmlToXlsx ? entity.htmlToXlsx.templateAssetShortid : null}
+            onChange={(selected) => this.changeHtmlToXlsx(this.props, {
+              templateAssetShortid: selected != null && selected.length > 0 ? selected[0].shortid : null
+            })}
+          />
         </div>
-        {htmlToXlsx.insertToXlsxTemplate === true && (
-          <div className='form-group'>
-            <label>xlsx asset</label>
-            <EntityRefSelect
-              headingLabel='Select xlsx template'
-              filter={(references) => ({ data: references.assets })}
-              value={entity.htmlToXlsx ? entity.htmlToXlsx.templateAssetShortid : null}
-              onChange={(selected) => this.changeHtmlToXlsx(this.props, {
-                templateAssetShortid: selected != null && selected.length > 0 ? selected[0].shortid : null
-              })}
-            />
-          </div>
-        )}
-        {htmlToXlsx.insertToXlsxTemplate === true && (
-          <div className='form-group'>
-            <label>xlsx template (deprecated)</label>
-            <EntityRefSelect
-              headingLabel='Select xlsx template'
-              filter={(references) => ({ xlsxTemplates: references.xlsxTemplates })}
-              value={entity.baseXlsxTemplate ? entity.baseXlsxTemplate.shortid : null}
-              onChange={(selected) => onChange({ _id: entity._id, baseXlsxTemplate: selected != null && selected.length > 0 ? { shortid: selected[0].shortid } : null })}
-            />
-          </div>
-        )}
+        <div className='form-group'>
+          <label>xlsx template (deprecated)</label>
+          <EntityRefSelect
+            headingLabel='Select xlsx template'
+            filter={(references) => ({ xlsxTemplates: references.xlsxTemplates })}
+            value={entity.baseXlsxTemplate ? entity.baseXlsxTemplate.shortid : null}
+            onChange={(selected) => onChange({ _id: entity._id, baseXlsxTemplate: selected != null && selected.length > 0 ? { shortid: selected[0].shortid } : null })}
+          />
+        </div>
         {htmlToXlsx.htmlEngine !== 'cheerio' && (
           <div className='form-group'>
             <label title='window.JSREPORT_READY_TO_START=true;'>wait for conversion trigger</label>

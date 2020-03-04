@@ -96,9 +96,6 @@ describe('html to xlsx', () => {
         engine: 'none',
         baseXlsxTemplate: {
           content: xlsxTemplateBuf.toString('base64')
-        },
-        htmlToXlsx: {
-          insertToXlsxTemplate: true
         }
       }
     }
@@ -132,9 +129,6 @@ describe('html to xlsx', () => {
         engine: 'none',
         baseXlsxTemplate: {
           content: xlsxTemplateBuf.toString('base64')
-        },
-        htmlToXlsx: {
-          insertToXlsxTemplate: true
         }
       }
     }
@@ -163,9 +157,6 @@ describe('html to xlsx', () => {
         engine: 'none',
         baseXlsxTemplate: {
           content: xlsxTemplateBuf.toString('base64')
-        },
-        htmlToXlsx: {
-          insertToXlsxTemplate: true
         }
       }
     }
@@ -201,9 +192,6 @@ describe('html to xlsx', () => {
         engine: 'none',
         baseXlsxTemplate: {
           content: xlsxTemplateBuf.toString('base64')
-        },
-        htmlToXlsx: {
-          insertToXlsxTemplate: true
         }
       }
     }
@@ -283,9 +271,6 @@ describe('html to xlsx', () => {
         engine: 'none',
         baseXlsxTemplate: {
           content: xlsxTemplateBuf.toString('base64')
-        },
-        htmlToXlsx: {
-          insertToXlsxTemplate: true
         }
       }
     }
@@ -317,9 +302,6 @@ describe('html to xlsx', () => {
         engine: 'none',
         baseXlsxTemplate: {
           content: xlsxTemplateBuf.toString('base64')
-        },
-        htmlToXlsx: {
-          insertToXlsxTemplate: true
         }
       }
     }
@@ -359,9 +341,6 @@ describe('html to xlsx', () => {
         engine: 'none',
         baseXlsxTemplate: {
           content: xlsxTemplateBuf.toString('base64')
-        },
-        htmlToXlsx: {
-          insertToXlsxTemplate: true
         }
       }
     }

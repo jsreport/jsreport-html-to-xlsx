@@ -392,20 +392,6 @@ var Properties = function (_Component) {
           _react2.default.createElement(
             'label',
             null,
-            'insert table output to xlsx template'
-          ),
-          _react2.default.createElement('input', {
-            type: 'checkbox', checked: htmlToXlsx.insertToXlsxTemplate === true,
-            onChange: function onChange(v) {
-              return _this2.changeHtmlToXlsx(_this2.props, { insertToXlsxTemplate: v.target.checked });
-            } })
-        ),
-        htmlToXlsx.insertToXlsxTemplate === true && _react2.default.createElement(
-          'div',
-          { className: 'form-group' },
-          _react2.default.createElement(
-            'label',
-            null,
             'xlsx asset'
           ),
           _react2.default.createElement(EntityRefSelect, {
@@ -421,7 +407,7 @@ var Properties = function (_Component) {
             }
           })
         ),
-        htmlToXlsx.insertToXlsxTemplate === true && _react2.default.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'form-group' },
           _react2.default.createElement(
