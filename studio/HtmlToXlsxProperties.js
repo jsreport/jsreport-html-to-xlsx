@@ -51,14 +51,12 @@ class Properties extends Component {
     this.removeInvalidXlsxTemplateReferences()
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentDidUpdate (prevProps) {
     // when component changes because another template is created
-    if (this.props.entity._id !== nextProps.entity._id) {
-      this.applyDefaultsToEntity(nextProps)
+    if (prevProps.entity._id !== this.props.entity._id) {
+      this.applyDefaultsToEntity(this.props)
     }
-  }
 
-  componentDidUpdate () {
     this.removeInvalidHtmlEngine()
     this.removeInvalidXlsxTemplateReferences()
   }

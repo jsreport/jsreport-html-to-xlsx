@@ -256,16 +256,13 @@ var Properties = function (_Component) {
       this.removeInvalidXlsxTemplateReferences();
     }
   }, {
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
-      // when component changes because another template is created
-      if (this.props.entity._id !== nextProps.entity._id) {
-        this.applyDefaultsToEntity(nextProps);
-      }
-    }
-  }, {
     key: 'componentDidUpdate',
-    value: function componentDidUpdate() {
+    value: function componentDidUpdate(prevProps) {
+      // when component changes because another template is created
+      if (prevProps.entity._id !== this.props.entity._id) {
+        this.applyDefaultsToEntity(this.props);
+      }
+
       this.removeInvalidHtmlEngine();
       this.removeInvalidXlsxTemplateReferences();
     }
