@@ -3,7 +3,7 @@ import Studio from 'jsreport-studio'
 
 const EntityRefSelect = Studio.EntityRefSelect
 
-class Properties extends Component {
+class HtmlToXlsxProperties extends Component {
   static selectXlsxTemplates (entities) {
     return Object.keys(entities).filter((k) => entities[k].__entitySet === 'xlsxTemplates').map((k) => entities[k])
   }
@@ -20,8 +20,8 @@ class Properties extends Component {
       return 'xlsx template'
     }
 
-    const foundItems = Properties.selectXlsxTemplates(entities).filter((e) => entity.baseXlsxTemplate != null && entity.baseXlsxTemplate.shortid === e.shortid)
-    const foundAssets = Properties.selectAssets(entities).filter((e) => entity.htmlToXlsx != null && entity.htmlToXlsx.templateAssetShortid === e.shortid)
+    const foundItems = HtmlToXlsxProperties.selectXlsxTemplates(entities).filter((e) => entity.baseXlsxTemplate != null && entity.baseXlsxTemplate.shortid === e.shortid)
+    const foundAssets = HtmlToXlsxProperties.selectAssets(entities).filter((e) => entity.htmlToXlsx != null && entity.htmlToXlsx.templateAssetShortid === e.shortid)
 
     if (!foundItems.length && !foundAssets.length) {
       return 'xlsx template'
@@ -177,4 +177,4 @@ class Properties extends Component {
   }
 }
 
-export default Properties
+export default HtmlToXlsxProperties

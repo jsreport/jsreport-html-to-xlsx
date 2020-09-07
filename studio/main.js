@@ -187,10 +187,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var EntityRefSelect = _jsreportStudio2.default.EntityRefSelect;
 
-var Properties = function (_Component) {
-  _inherits(Properties, _Component);
+var HtmlToXlsxProperties = function (_Component) {
+  _inherits(HtmlToXlsxProperties, _Component);
 
-  _createClass(Properties, null, [{
+  _createClass(HtmlToXlsxProperties, null, [{
     key: 'selectXlsxTemplates',
     value: function selectXlsxTemplates(entities) {
       return Object.keys(entities).filter(function (k) {
@@ -215,10 +215,10 @@ var Properties = function (_Component) {
         return 'xlsx template';
       }
 
-      var foundItems = Properties.selectXlsxTemplates(entities).filter(function (e) {
+      var foundItems = HtmlToXlsxProperties.selectXlsxTemplates(entities).filter(function (e) {
         return entity.baseXlsxTemplate != null && entity.baseXlsxTemplate.shortid === e.shortid;
       });
-      var foundAssets = Properties.selectAssets(entities).filter(function (e) {
+      var foundAssets = HtmlToXlsxProperties.selectAssets(entities).filter(function (e) {
         return entity.htmlToXlsx != null && entity.htmlToXlsx.templateAssetShortid === e.shortid;
       });
 
@@ -238,17 +238,17 @@ var Properties = function (_Component) {
     }
   }]);
 
-  function Properties(props) {
-    _classCallCheck(this, Properties);
+  function HtmlToXlsxProperties(props) {
+    _classCallCheck(this, HtmlToXlsxProperties);
 
-    var _this = _possibleConstructorReturn(this, (Properties.__proto__ || Object.getPrototypeOf(Properties)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (HtmlToXlsxProperties.__proto__ || Object.getPrototypeOf(HtmlToXlsxProperties)).call(this, props));
 
     _this.applyDefaultsToEntity = _this.applyDefaultsToEntity.bind(_this);
     _this.changeHtmlToXlsx = _this.changeHtmlToXlsx.bind(_this);
     return _this;
   }
 
-  _createClass(Properties, [{
+  _createClass(HtmlToXlsxProperties, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.applyDefaultsToEntity(this.props);
@@ -441,10 +441,10 @@ var Properties = function (_Component) {
     }
   }]);
 
-  return Properties;
+  return HtmlToXlsxProperties;
 }(_react.Component);
 
-exports.default = Properties;
+exports.default = HtmlToXlsxProperties;
 
 /***/ }),
 /* 3 */
