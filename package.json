@@ -54,7 +54,7 @@
     "eslint-plugin-babel": "5.3.1",
     "handlebars": "4.7.6",
     "in-publish": "2.0.1",
-    "jsreport-core": "2.10.0",
+    "jsreport-core": "github:jsreport/jsreport-core#v3",
     "jsreport-handlebars": "2.1.0",
     "jsreport-studio-dev": "1.6.0",
     "jsreport-templates": "2.4.0",
