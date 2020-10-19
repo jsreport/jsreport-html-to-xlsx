@@ -142,11 +142,14 @@ _jsreportStudio2.default.previewListeners.push(function (request, entities) {
     return React.createElement(
       'div',
       null,
-      'We need to upload your office report to our publicly hosted server to be able to use Office Online Service for previewing here in the studio. You can disable it in the configuration, see ',
+      'We need to upload your office report to our publicly hosted server to be able to use Office Online Service for previewing here in the studio. You can disable it in the configuration, see',
       React.createElement(
         'a',
         {
-          href: 'https://jsreport.net/learn/html-to-xlsx', target: '_blank' },
+          href: 'https://jsreport.net/learn/html-to-xlsx',
+          target: '_blank',
+          rel: 'noopener noreferrer'
+        },
         'https://jsreport.net/learn/html-to-xlsx'
       ),
       ' for details.'
@@ -435,7 +438,8 @@ var HtmlToXlsxProperties = function (_Component) {
             type: 'checkbox', title: 'window.JSREPORT_READY_TO_START=true;', checked: htmlToXlsx.waitForJS === true,
             onChange: function onChange(v) {
               return _this2.changeHtmlToXlsx(_this2.props, { waitForJS: v.target.checked });
-            } })
+            }
+          })
         )
       );
     }

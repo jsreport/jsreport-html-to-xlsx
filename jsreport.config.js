@@ -2,9 +2,9 @@
 const { extendSchema } = require('jsreport-office')
 
 module.exports = {
-  'name': 'html-to-xlsx',
-  'main': 'lib/htmlToXlsx.js',
-  'optionsSchema': extendSchema('html-to-xlsx', {
+  name: 'html-to-xlsx',
+  main: 'lib/htmlToXlsx.js',
+  optionsSchema: extendSchema('html-to-xlsx', {
     extensions: {
       'html-to-xlsx': {
         type: 'object',
@@ -35,6 +35,6 @@ module.exports = {
       }
     }
   }),
-  'dependencies': ['templates', 'xlsx'],
-  'hasPublicPart': false
+  dependencies: ['templates', 'xlsx'],
+  hasPublicPart: false
 }
