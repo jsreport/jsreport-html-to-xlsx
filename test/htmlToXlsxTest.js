@@ -14,6 +14,12 @@ describe('html to xlsx', () => {
     return reporter.init()
   })
 
+  afterEach(() => {
+    if (reporter) {
+      return reporter.close()
+    }
+  })
+
   it('should not fail when rendering', async () => {
     const request = {
       template: {
