@@ -1,3 +1,6 @@
+**⚠️ This repository has been moved to the monorepo [jsreport/jsreport](https://github.com/jsreport/jsreport)**
+--
+
 # jsreport-html-to-xlsx
 [![NPM Version](http://img.shields.io/npm/v/jsreport-html-to-xlsx.svg?style=flat-square)](https://npmjs.com/package/jsreport-html-to-xlsx)
 [![Build Status](https://travis-ci.org/jsreport/jsreport-html-to-xlsx.png?branch=master)](https://travis-ci.org/jsreport/jsreport-html-to-xlsx)
